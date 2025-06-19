@@ -1,5 +1,20 @@
 import { createClient } from "../supabase/client";
 
+// Definisikan tipe untuk data akun yang di-join
+type AccountData = {
+  name: string;
+  type: "masuk" | "keluar";
+};
+
+// Definisikan tipe untuk baris transaksi dari Supabase (termasuk join)
+type TransactionFromSupabase = {
+  id: string;
+  amount: number;
+  description: string;
+  date: string;
+  accounts: AccountData | null; // accounts bisa null jika tidak ada join atau data tidak ditemukan
+};
+
 export type TransactionRow = {
   id: string;
   amount: number;
@@ -37,14 +52,15 @@ export async function fetchTransactionsByTenant(
     return { data: [], total: 0 };
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const mapped: TransactionRow[] = (txs as any[]).map((t) => ({
+  const mapped: TransactionRow[] = (
+    txs as unknown as TransactionFromSupabase[]
+  ).map((t) => ({
     id: t.id,
     amount: t.amount,
     description: t.description,
     date: t.date,
     account_name: t.accounts?.name ?? "-",
-    type: t.accounts?.type ?? "-",
+    type: t.accounts?.type ?? "keluar", // Beri nilai default yang sesuai, misalnya "keluar" atau "masuk"
   }));
 
   return { data: mapped, total: count ?? 0 };
