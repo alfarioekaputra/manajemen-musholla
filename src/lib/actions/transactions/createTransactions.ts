@@ -1,7 +1,7 @@
 "use server";
 import { createClient } from "@/lib/supabase/server";
-import { db } from "../db";
-import { transactions } from "../schema";
+import { db } from "../../db";
+import { transactions } from "../../schema";
 
 export async function createTransaction(form: {
   accountId: string;
@@ -32,14 +32,6 @@ export async function createTransaction(form: {
       date: form.date,
       userId,
     });
-    // supabase.from("transactions").insert({
-    //   tenant_id: tenantId,
-    //   account_id: form.accountId,
-    //   amount: parseFloat(form.amount),
-    //   description: form.description,
-    //   date: new Date(),
-    //   user_id: userId,
-    // });
   } catch (err) {
     console.error("Gagal simpan transaksi:", err);
     return false;

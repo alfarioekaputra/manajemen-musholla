@@ -6,7 +6,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import {
   fetchTransactionsByTenant,
   TransactionRow,
-} from "@/lib/actions/fetchTransaction";
+} from "@/lib/actions/transactions/fetchTransaction";
 
 const columns: ColumnDef<TransactionRow>[] = [
   { accessorKey: "date", header: "Tanggal" },

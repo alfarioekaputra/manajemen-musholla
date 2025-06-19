@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createClient } from "@/lib/supabase/client";
-import { createTransaction } from "@/lib/actions/createTransactions";
+import { createTransaction } from "@/lib/actions/transactions/createTransactions";
 import { useRouter } from "next/navigation";
 
 type Account = {

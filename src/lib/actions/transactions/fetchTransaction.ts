@@ -1,4 +1,4 @@
-import { createClient } from "../supabase/client";
+import { createClient } from "../../supabase/client";
 
 // Definisikan tipe untuk data akun yang di-join
 type AccountData = {
