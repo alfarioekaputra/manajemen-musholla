@@ -10,7 +10,7 @@ import {
 
 const columns: ColumnDef<TransactionRow>[] = [
   { accessorKey: "date", header: "Tanggal" },
-  { accessorKey: "account_name", header: "Akun" },
+  { accessorKey: "account_name", header: "Jenis" },
   {
     accessorKey: "amount",
     header: "Nominal",
