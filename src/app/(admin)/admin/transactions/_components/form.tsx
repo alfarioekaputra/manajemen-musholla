@@ -88,7 +88,7 @@ export default function TransactionForm() {
       const { data } = await supabase
         .from("users")
         .select("tenant_id")
-        .eq("id", userId)
+        .eq("auth_id", userId)
         .single();
 
       const tenantId = data?.tenant_id;
@@ -107,6 +107,7 @@ export default function TransactionForm() {
   const onSubmit = async (data: z.infer<typeof TransactionSchema>) => {
     setIsLoading(true);
     const success = await createTransaction(data);
+
     if (success) {
       setIsLoading(false);
       router.push("/admin/transactions");

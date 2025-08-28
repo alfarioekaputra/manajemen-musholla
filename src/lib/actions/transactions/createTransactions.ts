@@ -18,7 +18,7 @@ export async function createTransaction(form: {
   const { data: userData } = await supabase
     .from("users")
     .select("tenant_id")
-    .eq("id", userId)
+    .eq("auth_id", userId)
     .single();
 
   const tenantId = userData?.tenant_id;

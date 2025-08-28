@@ -6,7 +6,7 @@ import Link from "next/link";
 import {
   fetchTotalKeluarByTenant,
   fetchTotalMasukByTenant,
-} from "@/lib/actions/transactions/fetchTransaction";
+} from "@/lib/actions/transactions/server";
 
 export default async function Home() {
   const totalMasuk = await fetchTotalMasukByTenant(

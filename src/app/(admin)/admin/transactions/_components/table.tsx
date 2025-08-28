@@ -5,8 +5,8 @@ import DataTable from "@/components/datatable";
 import { ColumnDef } from "@tanstack/react-table";
 import {
   fetchTransactionsByTenant,
-  TransactionRow,
-} from "@/lib/actions/transactions/fetchTransaction";
+  type TransactionRow,
+} from "@/lib/actions/transactions/client";
 
 const columns: ColumnDef<TransactionRow>[] = [
   { accessorKey: "date", header: "Tanggal" },
@@ -42,7 +42,7 @@ export default function TransactionTable() {
       const { data: userRow } = await supabase
         .from("users")
         .select("tenant_id")
-        .eq("id", user.id)
+        .eq("auth_id", user.id)
         .single();
 
       const tenantId = userRow?.tenant_id;

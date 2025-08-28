@@ -7,7 +7,7 @@ import {
   fetchMasukByTenant,
   fetchTotalKeluarByTenant,
   fetchTotalMasukByTenant,
-} from "@/lib/actions/transactions/fetchTransaction";
+} from "@/lib/actions/transactions/server";
 
 export default async function Finance() {
   const formatCurrency = (amount: number) => {
