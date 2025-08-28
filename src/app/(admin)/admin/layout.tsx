@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@radix-ui/react-separator";
 
-export default function PrivateLayout({
+export default function AdminLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

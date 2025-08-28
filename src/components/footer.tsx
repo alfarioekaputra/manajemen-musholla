@@ -1,6 +1,30 @@
 import { Building2, MapPin, Phone, Mail } from "lucide-react";
 
-export default function Footer() {
+export default async function Footer() {
+  const today = new Date();
+
+  // Get the year
+  const year = today.getFullYear();
+
+  // Get the month (add 1 because getMonth() returns 0-11) and pad with a leading zero if needed
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+
+  // Get the day of the month and pad with a leading zero if needed
+  const day = String(today.getDate()).padStart(2, "0");
+
+  // Combine the parts into the desired format
+  const formattedDate = `${year}-${month}-${day}`;
+  const res = await fetch(
+    `https://api.myquran.com/v2/sholat/jadwal/1204/${formattedDate}`,
+    {
+      cache: "no-store", // atau next: { revalidate: 3600 } untuk ISR
+    },
+  );
+  const data = await res.json();
+
+  const jadwal = data.data.jadwal;
+
+  console.log(jadwal);
   return (
     <footer className="bg-gray-800 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -8,7 +32,7 @@ export default function Footer() {
           <div>
             <div className="flex items-center space-x-2 mb-4">
               <Building2 className="h-8 w-8 text-emerald-400" />
-              <span className="text-xl font-bold">Musholla Al-Barokah</span>
+              <span className="text-xl font-bold">Musholla Baitul Jannah</span>
             </div>
             <p className="text-gray-300 mb-4">
               Tempat ibadah yang memberikan kedamaian dan ketenangan bagi umat
@@ -23,7 +47,7 @@ export default function Footer() {
               <div className="flex items-center space-x-2">
                 <MapPin className="h-4 w-4 text-emerald-400" />
                 <span className="text-gray-300">
-                  Jl. Barokah No. 123, Jakarta
+                  Sentraland Paradise, Cluster Venezia Parung Panjang
                 </span>
               </div>
               <div className="flex items-center space-x-2">
@@ -33,34 +57,36 @@ export default function Footer() {
               <div className="flex items-center space-x-2">
                 <Mail className="h-4 w-4 text-emerald-400" />
                 <span className="text-gray-300">
-                  info@musholla-albarokah.id
+                  info@mushollabaituljannah.id
                 </span>
               </div>
             </div>
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold mb-4">Waktu Sholat</h3>
+            <h3 className="text-lg font-semibold mb-4">
+              Waktu Sholat (Parung Panjang, Kab. Bogor)
+            </h3>
             <div className="space-y-1 text-gray-300">
               <div className="flex justify-between">
                 <span>Subuh</span>
-                <span>04:30</span>
+                <span>{jadwal.subuh}</span>
               </div>
               <div className="flex justify-between">
                 <span>Dzuhur</span>
-                <span>12:00</span>
+                <span>{jadwal.dzuhur}</span>
               </div>
               <div className="flex justify-between">
                 <span>Ashar</span>
-                <span>15:15</span>
+                <span>{jadwal.ashar}</span>
               </div>
               <div className="flex justify-between">
                 <span>Maghrib</span>
-                <span>18:00</span>
+                <span>{jadwal.maghrib}</span>
               </div>
               <div className="flex justify-between">
                 <span>Isya</span>
-                <span>19:30</span>
+                <span>{jadwal.isya}</span>
               </div>
             </div>
           </div>

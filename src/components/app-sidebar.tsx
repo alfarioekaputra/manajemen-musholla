@@ -41,12 +41,12 @@ const data = {
   navMain: [
     {
       title: "Dashboard",
-      url: "/app/dashboard",
+      url: "/admin/dashboard",
       icon: LayoutDashboard,
     },
     {
       title: "Transaction",
-      url: "/app/transactions",
+      url: "/admin/transactions",
       icon: WalletCards,
     },
     {

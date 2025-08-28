@@ -2,76 +2,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp, TrendingDown, DollarSign, Calendar } from "lucide-react";
 
-export default function Finance() {
-  const incomeData = [
-    {
-      date: "2025-01-15",
-      amount: 2500000,
-      source: "Infaq Jumat",
-      type: "income",
-    },
-    {
-      date: "2025-01-20",
-      amount: 1500000,
-      source: "Sedekah Jemaah",
-      type: "income",
-    },
-    {
-      date: "2025-01-25",
-      amount: 3000000,
-      source: "Donasi Program Ramadan",
-      type: "income",
-    },
-    {
-      date: "2025-01-28",
-      amount: 5500000,
-      source: "Wakaf Musholla",
-      type: "income",
-    },
-  ];
+import {
+  fetchKeluarByTenant,
+  fetchMasukByTenant,
+  fetchTotalKeluarByTenant,
+  fetchTotalMasukByTenant,
+} from "@/lib/actions/transactions/fetchTransaction";
 
-  const expenseData = [
-    {
-      date: "2025-01-10",
-      amount: 1200000,
-      description: "Listrik & Air",
-      category: "Operasional",
-      type: "expense",
-    },
-    {
-      date: "2025-01-15",
-      amount: 800000,
-      description: "Kebersihan & Maintenance",
-      category: "Operasional",
-      type: "expense",
-    },
-    {
-      date: "2025-01-18",
-      amount: 2500000,
-      description: "Renovasi Tempat Wudhu",
-      category: "Pembangunan",
-      type: "expense",
-    },
-    {
-      date: "2025-01-22",
-      amount: 1500000,
-      description: "Konsumsi Kajian Bulanan",
-      category: "Kegiatan",
-      type: "expense",
-    },
-    {
-      date: "2025-01-25",
-      amount: 2750000,
-      description: "Pembelian Karpet Sholat",
-      category: "Perlengkapan",
-      type: "expense",
-    },
-  ];
-
-  const totalIncome = incomeData.reduce((sum, item) => sum + item.amount, 0);
-  const totalExpense = expenseData.reduce((sum, item) => sum + item.amount, 0);
-  const balance = totalIncome - totalExpense;
-
+export default async function Finance() {
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
@@ -87,6 +25,42 @@ export default function Finance() {
       day: "numeric",
     });
   };
+
+  const totalMasuk = await fetchTotalMasukByTenant(
+    "cc7ecaf6-4a29-48a8-badb-d4b96b0dbec3",
+  );
+
+  const totalKeluar = await fetchTotalKeluarByTenant(
+    "cc7ecaf6-4a29-48a8-badb-d4b96b0dbec3",
+  );
+
+  const saldo = totalMasuk - totalKeluar;
+
+  const incomeData = await fetchMasukByTenant(
+    "cc7ecaf6-4a29-48a8-badb-d4b96b0dbec3",
+  );
+
+  const expenseData = await fetchKeluarByTenant(
+    "cc7ecaf6-4a29-48a8-badb-d4b96b0dbec3",
+  );
+
+  const month = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const today = new Date();
+  const monthName = month[today.getMonth()];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -111,9 +85,9 @@ export default function Finance() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-green-600">
-                {formatCurrency(totalIncome)}
+                {formatCurrency(totalMasuk)}
               </div>
-              <p className="text-xs text-green-600 mt-1">Januari 2025</p>
+              <p className="text-xs text-green-600 mt-1">{monthName} 2025</p>
             </CardContent>
           </Card>
 
@@ -126,9 +100,9 @@ export default function Finance() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-red-600">
-                {formatCurrency(totalExpense)}
+                {formatCurrency(totalKeluar)}
               </div>
-              <p className="text-xs text-red-600 mt-1">Januari 2025</p>
+              <p className="text-xs text-red-600 mt-1">{monthName} 2025</p>
             </CardContent>
           </Card>
 
@@ -141,9 +115,9 @@ export default function Finance() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-blue-600">
-                {formatCurrency(balance)}
+                {formatCurrency(saldo)}
               </div>
-              <p className="text-xs text-blue-600 mt-1">Per Januari 2025</p>
+              <p className="text-xs text-blue-600 mt-1">Per {monthName} 2025</p>
             </CardContent>
           </Card>
         </div>
@@ -172,12 +146,15 @@ export default function Finance() {
                         </span>
                       </div>
                       <h3 className="font-medium text-gray-800">
-                        {item.source}
+                        {item.description}
                       </h3>
+                      <Badge variant="outline" className="mt-1">
+                        {item.accountName}
+                      </Badge>
                     </div>
                     <div className="text-right">
                       <p className="text-lg font-bold text-green-600">
-                        {formatCurrency(item.amount)}
+                        {formatCurrency(parseInt(item.amount))}
                       </p>
                       <Badge
                         variant="secondary"
@@ -218,12 +195,12 @@ export default function Finance() {
                         {item.description}
                       </h3>
                       <Badge variant="outline" className="mt-1">
-                        {item.category}
+                        {item.accountName}
                       </Badge>
                     </div>
                     <div className="text-right">
                       <p className="text-lg font-bold text-red-600">
-                        {formatCurrency(item.amount)}
+                        {formatCurrency(parseInt(item.amount))}
                       </p>
                       <Badge
                         variant="secondary"

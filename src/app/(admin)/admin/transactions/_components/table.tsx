@@ -63,13 +63,13 @@ export default function TransactionTable() {
   }, [pageIndex]);
 
   return (
-    <DataTable
+    <DataTable<TransactionRow>
       data={data}
       columns={columns}
       pageIndex={pageIndex}
       pageSize={pageSize}
       totalRows={totalRows}
-      onPageChange={setPageIndex}
+      onPageChangeAction={setPageIndex}
     />
   );
 }

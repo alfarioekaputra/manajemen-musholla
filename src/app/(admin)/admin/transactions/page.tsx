@@ -13,7 +13,7 @@ export default async function TransactionsPage() {
   return (
     <>
       <Button variant="default">
-        <Link href="/app/transactions/create">Tambah Data</Link>
+        <Link href="/admin/transactions/create">Tambah Data</Link>
       </Button>
       <TransactionTable />
     </>

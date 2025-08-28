@@ -3,9 +3,22 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar, Banknote, BookOpen, TrendingUp } from "lucide-react";
 import Link from "next/link";
 
-export default function Home() {
+import {
+  fetchTotalKeluarByTenant,
+  fetchTotalMasukByTenant,
+} from "@/lib/actions/transactions/fetchTransaction";
+
+export default async function Home() {
+  const totalMasuk = await fetchTotalMasukByTenant(
+    "cc7ecaf6-4a29-48a8-badb-d4b96b0dbec3",
+  );
+
+  const totalKeluar = await fetchTotalKeluarByTenant(
+    "cc7ecaf6-4a29-48a8-badb-d4b96b0dbec3",
+  );
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50">
+    <div className="min-h-screen bg-teal-50">
       {/* Hero Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
@@ -35,8 +48,52 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Financial Summary */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
+            Ringkasan Keuangan Bulan Ini
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <Card className="bg-green-50 border-green-200">
+              <CardHeader>
+                <CardTitle className="flex items-center text-green-700">
+                  <TrendingUp className="h-5 w-5 mr-2" />
+                  Total Pemasukan
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-3xl font-bold text-green-600">
+                  Rp{new Intl.NumberFormat("id-ID").format(totalMasuk)}
+                </p>
+                <p className="text-green-600 mt-2">
+                  Dari infaq, sedekah, dan donasi
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-blue-50 border-blue-200">
+              <CardHeader>
+                <CardTitle className="flex items-center text-blue-700">
+                  <Banknote className="h-5 w-5 mr-2" />
+                  Total Pengeluaran
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-3xl font-bold text-blue-600">
+                  Rp{new Intl.NumberFormat("id-ID").format(totalKeluar)}
+                </p>
+                <p className="text-blue-600 mt-2">
+                  Untuk operasional dan kegiatan
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
       {/* Quick Access Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+      <section className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
             Informasi Terbuka
@@ -87,48 +144,6 @@ export default function Home() {
                 <Button asChild variant="outline" className="w-full">
                   <Link href="/blog">Baca Artikel</Link>
                 </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Financial Summary */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
-            Ringkasan Keuangan Bulan Ini
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card className="bg-green-50 border-green-200">
-              <CardHeader>
-                <CardTitle className="flex items-center text-green-700">
-                  <TrendingUp className="h-5 w-5 mr-2" />
-                  Total Pemasukan
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-3xl font-bold text-green-600">
-                  Rp 12,500,000
-                </p>
-                <p className="text-green-600 mt-2">
-                  Dari infaq, sedekah, dan donasi
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-blue-50 border-blue-200">
-              <CardHeader>
-                <CardTitle className="flex items-center text-blue-700">
-                  <Banknote className="h-5 w-5 mr-2" />
-                  Total Pengeluaran
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-3xl font-bold text-blue-600">Rp 8,750,000</p>
-                <p className="text-blue-600 mt-2">
-                  Untuk operasional dan kegiatan
-                </p>
               </CardContent>
             </Card>
           </div>

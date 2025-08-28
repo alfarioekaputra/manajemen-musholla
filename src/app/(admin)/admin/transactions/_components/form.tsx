@@ -109,7 +109,7 @@ export default function TransactionForm() {
     const success = await createTransaction(data);
     if (success) {
       setIsLoading(false);
-      router.push("/app/transactions");
+      router.push("/admin/transactions");
     } else {
       alert("Gagal menyimpan transaksi");
     }

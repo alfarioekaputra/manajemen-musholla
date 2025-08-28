@@ -15,7 +15,7 @@ type DataTableProps<TData> = {
   pageIndex: number;
   pageSize: number;
   totalRows: number;
-  onPageChange: (page: number) => void;
+  onPageChangeAction: (page: number) => void;
 };
 
 export default function DataTable<TData>({
@@ -24,7 +24,7 @@ export default function DataTable<TData>({
   pageIndex,
   pageSize,
   totalRows,
-  onPageChange,
+  onPageChangeAction,
 }: DataTableProps<TData>) {
   const table = useReactTable({
     data,
@@ -44,7 +44,7 @@ export default function DataTable<TData>({
         typeof updater === "function"
           ? updater({ pageIndex, pageSize })
           : updater;
-      onPageChange(next.pageIndex);
+      onPageChangeAction(next.pageIndex);
     },
   });
 
